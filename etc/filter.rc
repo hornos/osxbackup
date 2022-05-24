@@ -1,0 +1,128 @@
+# vim: set filetype=conf :
+#
+# Configuration file for rofs-filtered (filtered ReadOnlyFileSystem)
+#
+# Comments must start with '#' in the first column.
+# If the pattern is supposed to start with '#', use '\#' instead.
+#
+# This file is only read at start-up, so after modifying it, umount and
+# re-mount the directory to make it take effect.
+#
+# Each line below should contain a RegEx (regular expression) pattern (no
+# longer than 1023 characters) that matches the files to be filtered out (or
+# hidden). The pattern is applied to the full path, starting at the mount
+# point. See the regex(7) man page for the allowed syntax.
+#
+# For example, assume we have the following source directory structure mounted
+# at /mnt/point :
+#
+# sourceDir/
+# |-- block
+# |-- character
+# |-- file1.flac
+# |-- file1.mp3
+# |-- file2.mp3
+# |-- file3.mp3 -> subDir1/file3.mp3
+# |-- type:LNK
+# |-- subDir1/
+# |   |-- file3.flac
+# |   |-- file3.mp3
+# |   |-- fileA.mp3
+# |   |-- pipe|
+# |   |-- socket=
+# |   `-- subSubDir1/
+# `-- subDir2/
+#     |-- fileA.mp3
+#     |-- file4.flac
+#     `-- file4.mp3
+#
+# The RegEx will be tested against:
+# /
+# /file1.flac
+# /file1.mp3
+# /file2.mp3
+# /subDir1
+# /subDir1/file3.flac
+# etc...
+#
+# Notice that it's not tested against the absolute location of the file (which
+# would be /mnt/point/subDir1/file3.flac for example).
+#
+# Hide all *.flac files (all files or directories that end in ".flac"):
+# .*\.flac$
+#
+# Hide subDir2 (and all its contents), no matter where it appears in the tree:
+# /subDir2$
+#
+# Hide the subDir2 but only if it occurs at the root of the tree:
+# ^/subDir2$
+#
+# Since a RegEx can not start with '|' (vertical bar), this symbol is used to
+# escape out of RegEx mode and introduce special configuration flags.
+#
+# Special file types will be filtered out using these lines, see stat(2) for more details.
+# |type:CHR
+# |type:BLK
+# |type:LNK
+# |type:FIFO
+# |type:SOCK
+#
+# Note this is a RegEx filter, not a special file type filter.
+# type:LNK
+#
+# DO NOT FILTER Documents !
+^/go$
+^/Qt$
+^/Public$
+^/Creative\ Cloud\ Files$
+^/Downloads$
+^/Private/Pictures$
+/\.git$
+/\.next$
+/jspm_packages$
+/node_modules$
+/venv$
+/osxbackup/filter$
+/osxbackup/reverse$
+/osxbackup/target$
+/__pycache__$
+#
+^/\.Trash$
+^/Library/Caches$
+^/Library/Containers$
+^/Library/Group\ Containers$
+^/Library/Application\ Support/CallHistoryTransactions$
+^/Library/Application\ Support/CloudDocs/session/db$
+^/Library/Application\ Support/com.apple.sharedfilelist$
+^/Library/Application\ Support/Knowledge$
+^/Library/Application\ Support/com.apple.TCC$
+^/Library/Application\ Support/FileProvider$
+^/Library/Application\ Support/AddressBook$
+^/Library/Application\ Support/com.apple.avfoundation/Frecents$
+^/Library/Application\ Support/CallHistoryDB$
+^/Library/Assistant/SiriVocabulary$
+^/Library/Autosave\ Information$
+^/Library/IdentityServices$
+^/Library/Messages$
+^/Library/HomeKit$
+^/Library/Sharing$
+^/Library/Mail$
+^/Library/DuetExpertCenter$
+^/Library/Accounts$
+^/Library/Safari$
+^/Library/Biome$
+^/Library/Shortcuts$
+^/Library/Suggestions$
+^/Library/PersonalizationPortrait$
+^/Library/Metadata/CoreSpotlight$
+^/Library/Metadata/com.apple.IntelligentSuggestions$
+^/Library/Cookies$
+^/Library/CoreFollowUp$
+^/Library/StatusKit$
+^/Library/Developer$
+^/Library/Google/GoogleSoftwareUpdate/Stats/Keystone.stats$
+^/Library/Preferences/com.apple.AddressBook.plist$
+^/Library/Preferences/com.apple.homed.notbackedup.plist$
+^/Library/Preferences/com.apple.homed.plist$
+^/Library/Preferences/com.apple.mail-shared.plist$
+#
